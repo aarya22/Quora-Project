@@ -18,13 +18,13 @@ from keras.utils import plot_model
 
 import matplotlib.pyplot as plt
 
-import warnings
+import warningsA
 warnings.filterwarnings('ignore')
 
 
 # In[2]:
 
-
+print("Reading file...")
 EMBEDDING_FILE = './data/embeddings/glove.840B.300d/glove.840B.300d.txt'
 train = pd.read_csv('./data/train.csv')
 test = pd.read_csv('./data/test.csv')
@@ -32,7 +32,6 @@ submission = pd.read_csv('./data/sample_submission.csv')
 
 
 # In[3]:
-
 
 X_train = train["question_text"].fillna("fillna").values
 y_train = train["target"].values
@@ -44,6 +43,7 @@ embed_size = 300
 
 threshold = 0.35
 
+print("Tokenizing and padding...")
 tokenizer = text.Tokenizer(num_words=max_features)
 tokenizer.fit_on_texts(list(X_train) + list(X_test))
 X_train = tokenizer.texts_to_sequences(X_train)
@@ -54,6 +54,7 @@ x_test = sequence.pad_sequences(X_test, maxlen=maxlen)
 
 # In[7]:
 
+print("Retrieving embeddings...")
 
 def get_coefs(word,*arr):
     return word, np.asarray(arr, dtype='float32')
@@ -159,10 +160,10 @@ model = get_model1()
 
 # In[34]:
 
-
 batch_size = 256
 epochs = 5
 
+print("Splitting data...")
 X_tra, X_val, y_tra, y_val = train_test_split(x_train, y_train, train_size=0.95,
                                               random_state=233)
 F1_Score = F1Evaluation(validation_data=(X_val, y_val), interval=1)
@@ -227,6 +228,8 @@ plot_model(model, to_file='model2.png')
 
 batch_size = 256
 epochs = 5
+
+print("Splitting data...")
 
 X_tra, X_val, y_tra, y_val = train_test_split(x_train, y_train, train_size=0.95,
                                               random_state=233)
